@@ -29,7 +29,7 @@
                   <el-button 
                     type="primary" 
                     size="small" 
-                    @click="downloadSharedFile(scope.row.share_id)"
+                    @click="downloadSharedFile(scope.row)"
                     :loading="downloadingShareId === scope.row.share_id"
                   >
                     下载
@@ -209,10 +209,12 @@ export default {
       this.loadSharedByMe()
     },
     
-    async downloadSharedFile(shareId) {
+    async downloadSharedFile(row) {
+      const shareId = row && row.share_id ? row.share_id : row
+      const fileName = row && row.file_name ? row.file_name : ''
       this.downloadingShareId = shareId
       try {
-        await downloadShare(shareId)
+        await downloadShare(shareId, fileName)
       } catch (error) {
         console.error('下载文件失败:', error)
         this.$message.error('下载失败：' + (error.message || '未知错误'))
