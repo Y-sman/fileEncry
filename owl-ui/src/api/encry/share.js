@@ -51,14 +51,15 @@ export function downloadShare(shareId, filename) {
     const blob = res instanceof Blob ? res : res.data
     const isBlob = await blobValidate(blob)
     if (isBlob) {
-      saveAs(blob, filename || 'shared-file.bin')
+      saveAs(blob, filename || 'shared-file')
       return
     }
     const text = await blob.text()
     let msg = errorCode['default']
     try {
       const rsp = JSON.parse(text)
-      msg = rsp.msg || errorCode[rsp.code] || msg
+      const code = rsp.code
+      msg = rsp.msg || (code ? errorCode[code] : undefined) || msg
     } catch (e) {
       if (text) msg = text
     }
