@@ -48,10 +48,10 @@ export function downloadShare(shareId, filename) {
     method: 'get',
     responseType: 'blob'
   }).then(async res => {
-    const blob = res
+    const blob = res instanceof Blob ? res : res.data
     const isBlob = await blobValidate(blob)
     if (isBlob) {
-      saveAs(blob, filename || 'shared-file')
+      saveAs(blob, filename || 'shared-file.bin')
       return
     }
     const text = await blob.text()
