@@ -1,6 +1,8 @@
 import request from '@/utils/request'
+import { saveAs } from 'file-saver'
+import { blobValidate } from '@/utils/ruoyi'
+import errorCode from '@/utils/errorCode'
 
-// 分享文件
 export function shareFile(fileId, targetUserId) {
   return request({
     url: '/encry/file/share',
@@ -12,7 +14,6 @@ export function shareFile(fileId, targetUserId) {
   })
 }
 
-// 分享给我的文件列表
 export function getSharedToMe(params) {
   return request({
     url: '/encry/file/shared-to-me',
@@ -21,7 +22,6 @@ export function getSharedToMe(params) {
   })
 }
 
-// 我分享的文件列表
 export function getSharedByMe(params) {
   return request({
     url: '/encry/file/shared-by-me',
@@ -30,7 +30,6 @@ export function getSharedByMe(params) {
   })
 }
 
-// 撤销分享
 export function revokeShare(shareId) {
   return request({
     url: `/encry/file/share/${shareId}`,
@@ -38,32 +37,36 @@ export function revokeShare(shareId) {
   })
 }
 
-// 下载分享的文件
-export function downloadShare(shareId) {
+async function saveShareBlob(blob, filename) {
+  const isBlob = await blobValidate(blob)
+  if (isBlob) {
+    saveAs(blob, filename || 'download')
+    return
+  }
+
+  const text = await blob.text()
+  let msg = errorCode['default']
+  try {
+    const rsp = JSON.parse(text)
+    msg = rsp.msg || errorCode[rsp.code] || msg
+  } catch (e) {
+    if (text) msg = text
+  }
+  throw new Error(msg)
+}
+
+export function downloadShare(shareId, filename) {
   return request({
     url: `/encry/file/share/download/${shareId}`,
     method: 'get',
     responseType: 'blob'
-  }).then(response => {
-    const blob = new Blob([response.data])
-    const url = window.URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    
-    // 从响应头中获取文件名
-    const contentDisposition = response.headers['content-disposition']
-    let fileName = 'download'
-    if (contentDisposition) {
-      const match = contentDisposition.match(/filename="(.*)"/)
-      if (match && match[1]) {
-        fileName = match[1]
-      }
-    }
-    
-    a.download = fileName
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    window.URL.revokeObjectURL(url)
-  })
+  }).then(blob => saveShareBlob(blob, filename))
+}
+
+export function downloadShareByFile(fileId, filename) {
+  return request({
+    url: `/encry/file/share/download/by-file/${fileId}`,
+    method: 'get',
+    responseType: 'blob'
+  }).then(blob => saveShareBlob(blob, filename))
 }

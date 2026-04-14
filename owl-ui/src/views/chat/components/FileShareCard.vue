@@ -7,13 +7,13 @@
       <div class="file-name">{{ fileName }}</div>
       <div class="file-meta">
         <span class="file-size">{{ formatFileSize(fileSize) }}</span>
-        <span v-if="senderName" class="sender-name">分享者: {{ senderName }}</span>
+        <span v-if="senderName" class="sender-name">分享者 {{ senderName }}</span>
       </div>
     </div>
     <div class="file-actions">
-      <el-button 
-        type="primary" 
-        size="small" 
+      <el-button
+        type="primary"
+        size="small"
         @click="handleDownload"
         :loading="downloading"
       >
@@ -62,9 +62,9 @@ export default {
     async handleDownload() {
       this.downloading = true
       try {
-        await downloadShare(this.shareId)
+        await downloadShare(this.shareId, this.fileName)
       } catch (error) {
-        this.$message.error('下载失败：' + (error.message || '未知错误'))
+        this.$message.error('下载失败: ' + (error.message || '未知错误'))
       } finally {
         this.downloading = false
       }

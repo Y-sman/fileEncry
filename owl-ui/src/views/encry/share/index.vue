@@ -6,18 +6,13 @@
           <span>文件分享管理</span>
         </div>
       </template>
-      
+
       <el-tabs v-model="activeTab" @tab-click="handleTabChange">
-        <!-- 分享给我的 -->
         <el-tab-pane label="分享给我的" name="shared-to-me">
           <div class="table-container">
             <el-table :data="sharedToMeList" style="width: 100%">
               <el-table-column prop="owner_name" label="分享者" width="120" />
-              <el-table-column prop="file_name" label="文件名">
-                <template slot-scope="scope">
-                  <span>{{ scope.row.file_name }}</span>
-                </template>
-              </el-table-column>
+              <el-table-column prop="file_name" label="文件名" />
               <el-table-column prop="file_size" label="文件大小" width="100">
                 <template slot-scope="scope">
                   <span>{{ formatFileSize(scope.row.file_size) }}</span>
@@ -26,10 +21,10 @@
               <el-table-column prop="create_time" label="分享时间" width="180" />
               <el-table-column label="操作" width="100" fixed="right">
                 <template slot-scope="scope">
-                  <el-button 
-                    type="primary" 
-                    size="small" 
-                    @click="downloadSharedFile(scope.row.share_id)"
+                  <el-button
+                    type="primary"
+                    size="small"
+                    @click="downloadSharedFile(scope.row)"
                     :loading="downloadingShareId === scope.row.share_id"
                   >
                     下载
@@ -37,11 +32,11 @@
                 </template>
               </el-table-column>
             </el-table>
-            
+
             <div v-if="sharedToMeTotal === 0" class="empty-state">
               <el-empty description="暂无分享记录" />
             </div>
-            
+
             <div v-else class="pagination-container">
               <el-pagination
                 :current-page="sharedToMePage"
@@ -53,17 +48,12 @@
             </div>
           </div>
         </el-tab-pane>
-        
-        <!-- 我分享的 -->
+
         <el-tab-pane label="我分享的" name="shared-by-me">
           <div class="table-container">
             <el-table :data="sharedByMeList" style="width: 100%">
               <el-table-column prop="target_user_name" label="接收者" width="120" />
-              <el-table-column prop="file_name" label="文件名">
-                <template slot-scope="scope">
-                  <span>{{ scope.row.file_name }}</span>
-                </template>
-              </el-table-column>
+              <el-table-column prop="file_name" label="文件名" />
               <el-table-column prop="file_size" label="文件大小" width="100">
                 <template slot-scope="scope">
                   <span>{{ formatFileSize(scope.row.file_size) }}</span>
@@ -79,9 +69,9 @@
               </el-table-column>
               <el-table-column label="操作" width="100" fixed="right">
                 <template slot-scope="scope">
-                  <el-button 
-                    type="danger" 
-                    size="small" 
+                  <el-button
+                    type="danger"
+                    size="small"
                     @click="revokeShare(scope.row.share_id)"
                     :loading="revokingShareId === scope.row.share_id"
                     :disabled="scope.row.status !== 0"
@@ -91,11 +81,11 @@
                 </template>
               </el-table-column>
             </el-table>
-            
+
             <div v-if="sharedByMeTotal === 0" class="empty-state">
               <el-empty description="暂无分享记录" />
             </div>
-            
+
             <div v-else class="pagination-container">
               <el-pagination
                 :current-page="sharedByMePage"
@@ -121,18 +111,12 @@ export default {
     return {
       activeTab: 'shared-to-me',
       pageSize: 10,
-      
-      // 分享给我的
       sharedToMePage: 1,
       sharedToMeList: [],
       sharedToMeTotal: 0,
-      
-      // 我分享的
       sharedByMePage: 1,
       sharedByMeList: [],
       sharedByMeTotal: 0,
-      
-      // 加载状态
       downloadingShareId: null,
       revokingShareId: null
     }
@@ -141,7 +125,6 @@ export default {
     this.loadSharedToMe()
   },
   activated() {
-    // 页面重新激活时刷新数据
     if (this.activeTab === 'shared-to-me') {
       this.loadSharedToMe()
     } else {
@@ -150,15 +133,13 @@ export default {
   },
   methods: {
     formatFileSize(bytes) {
-      if (bytes === 0) return '0 B'
+      if (!bytes) return '0 B'
       const k = 1024
       const sizes = ['B', 'KB', 'MB', 'GB']
       const i = Math.floor(Math.log(bytes) / Math.log(k))
       return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
     },
-    
     handleTabChange(tab) {
-      // 兼容 Element UI 的 tab-click 事件，直接使用 tab.name
       const tabName = tab.name || (tab.props && tab.props.name)
       if (tabName === 'shared-to-me') {
         this.loadSharedToMe()
@@ -166,7 +147,6 @@ export default {
         this.loadSharedByMe()
       }
     },
-    
     async loadSharedToMe() {
       try {
         const response = await getSharedToMe({
@@ -182,7 +162,6 @@ export default {
         this.$message.error('获取分享记录失败')
       }
     },
-    
     async loadSharedByMe() {
       try {
         const response = await getSharedByMe({
@@ -198,29 +177,26 @@ export default {
         this.$message.error('获取分享记录失败')
       }
     },
-    
     handleSharedToMePageChange(page) {
       this.sharedToMePage = page
       this.loadSharedToMe()
     },
-    
     handleSharedByMePageChange(page) {
       this.sharedByMePage = page
       this.loadSharedByMe()
     },
-    
-    async downloadSharedFile(shareId) {
+    async downloadSharedFile(row) {
+      const shareId = row.share_id
       this.downloadingShareId = shareId
       try {
-        await downloadShare(shareId)
+        await downloadShare(shareId, row.file_name)
       } catch (error) {
         console.error('下载文件失败:', error)
-        this.$message.error('下载失败：' + (error.message || '未知错误'))
+        this.$message.error('下载失败: ' + (error.message || '未知错误'))
       } finally {
         this.downloadingShareId = null
       }
     },
-    
     async revokeShare(shareId) {
       this.revokingShareId = shareId
       try {
@@ -233,7 +209,7 @@ export default {
         }
       } catch (error) {
         console.error('撤销分享失败:', error)
-        this.$message.error('撤销失败：' + (error.message || '未知错误'))
+        this.$message.error('撤销失败: ' + (error.message || '未知错误'))
       } finally {
         this.revokingShareId = null
       }

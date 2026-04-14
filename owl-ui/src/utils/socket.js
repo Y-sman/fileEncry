@@ -158,7 +158,7 @@ class SocketClient {
    * @param {number} msgType - 消息类型，默认 1（文本）
    * @returns {Promise}
    */
-  sendMessage(receiverId, content, msgType = 1) {
+  sendMessage(receiverId, content, msgType = 1, fileId = null) {
     return new Promise((resolve, reject) => {
       if (!this.isConnected || !this.socket) {
         reject(new Error('WebSocket 未连接'))
@@ -168,7 +168,8 @@ class SocketClient {
       this.socket.emit('chat.message', {
         receiver_id: receiverId,
         content,
-        msg_type: msgType
+        msg_type: msgType,
+        file_id: fileId
       }, (response) => {
         if (response && response.error) {
           reject(new Error(response.error))

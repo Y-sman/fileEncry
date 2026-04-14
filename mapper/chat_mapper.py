@@ -175,7 +175,14 @@ class ChatMapper:
             return False
 
     @classmethod
-    def save_message(cls, sender_id: int, receiver_id: int, content: str, msg_type: int = 1) -> int:
+    def save_message(
+        cls,
+        sender_id: int,
+        receiver_id: int,
+        content: str,
+        msg_type: int = 1,
+        file_id: int = None
+    ) -> int:
         """
         保存聊天消息
 
@@ -198,7 +205,7 @@ class ChatMapper:
             receiver_id=receiver_id,
             content=content,
             msg_type=msg_type,
-            file_id=None,
+            file_id=file_id,
             is_read=0  # 默认未读
         )
         result = db.session.execute(stmt)

@@ -7,7 +7,6 @@
         </div>
       </template>
       <div class="chat-container">
-        <!-- 左侧好友列表 -->
         <div class="friend-list-container">
           <friend-list
             :friends="friends"
@@ -15,8 +14,7 @@
             @select="selectFriend"
           />
         </div>
-        
-        <!-- 右侧聊天窗口 -->
+
         <div class="chat-window-container">
           <chat-window
             v-if="activeFriend"
@@ -35,8 +33,7 @@
           </div>
         </div>
       </div>
-      
-      <!-- 分享文件弹窗 -->
+
       <ShareFileDialog
         :visible.sync="shareDialogVisible"
         :file="{
@@ -47,8 +44,7 @@
         @update:visible="handleShareDialogVisible"
         @success="handleShareSuccess"
       />
-      
-      <!-- 文件选择对话框 -->
+
       <el-dialog
         title="选择文件"
         :visible.sync="fileSelectDialogVisible"
@@ -84,14 +80,12 @@
 <script>
 import FriendList from '@/components/Chat/FriendList'
 import ChatWindow from '@/components/Chat/ChatWindow'
-import { getSessions, getHistory, markAsRead } from '@/api/chat'
+import { getHistory, markAsRead } from '@/api/chat'
 import { getFriendList } from '@/api/friend'
 import socketClient from '@/utils/socket'
-import { getToken } from '@/utils/auth'
 import { getUserProfile } from '@/api/system/user'
-// import { getFileList } from '@/api/encry/file'
 import { listFile } from '@/api/encry/file'
-import { getUserPublicKey, uploadEncryptedFile } from '@/api/encry/key'
+import { uploadEncryptedFile } from '@/api/encry/key'
 import ShareFileDialog from '@/components/ShareFileDialog'
 
 export default {
@@ -105,12 +99,11 @@ export default {
     return {
       friends: [],
       activeFriendId: null,
-      messages: {}, // 按好友ID存储消息
+      messages: {},
       currentUserId: 0,
       loadingMore: false,
       page: 1,
       pageSize: 20,
-      // 文件分享相关
       shareDialogVisible: false,
       fileList: [],
       selectedFile: null,
@@ -138,18 +131,14 @@ export default {
   },
   methods: {
     async init() {
-      // 获取当前用户信息
       await this.getCurrentUserInfo()
-      // 获取好友列表
       await this.getFriends()
     },
     async getCurrentUserInfo() {
       try {
         const response = await getUserProfile()
         if (response.code === 200) {
-          // 后端返回驼峰命名 userId
           this.currentUserId = response.data.userId
-          console.log('当前用户ID:', this.currentUserId)
         }
       } catch (error) {
         console.error('获取用户信息失败:', error)
@@ -159,7 +148,6 @@ export default {
       try {
         const response = await getFriendList()
         if (response.code === 200) {
-          // 为每个好友添加 online 字段，默认为 false
           this.friends = response.data.map(friend => ({
             ...friend,
             online: false
@@ -172,9 +160,7 @@ export default {
     async selectFriend(friend) {
       this.activeFriendId = friend.user_id
       this.page = 1
-      // 获取聊天历史
       await this.getChatHistory(friend.user_id)
-      // 标记消息为已读
       await this.markMessagesAsRead(friend.user_id)
     },
     async getChatHistory(friendId) {
@@ -198,7 +184,6 @@ export default {
       try {
         const response = await markAsRead(friendId)
         if (response.code === 200) {
-          // 更新好友列表中的未读计数
           const friendIndex = this.friends.findIndex(f => f.user_id === friendId)
           if (friendIndex !== -1) {
             this.friends[friendIndex].unread_count = 0
@@ -210,30 +195,29 @@ export default {
     },
     async sendMessage(messageData) {
       try {
-        // 通过 WebSocket 发送消息
         await socketClient.sendMessage(
           messageData.receiver_id,
           messageData.content,
-          messageData.msg_type
+          messageData.msg_type,
+          messageData.file_id || null
         )
-        
-        // 本地添加消息
+
         const newMessage = {
           id: Date.now(),
           sender_id: this.currentUserId,
           receiver_id: messageData.receiver_id,
           content: messageData.content,
           msg_type: messageData.msg_type,
+          file_id: messageData.file_id || null,
           is_read: 1,
           create_time: new Date()
         }
-        
+
         if (!this.messages[messageData.receiver_id]) {
           this.$set(this.messages, messageData.receiver_id, [])
         }
         this.messages[messageData.receiver_id].push(newMessage)
-        
-        // 更新好友列表中的最后消息 - 使用 Vue.set 确保响应式
+
         const friendIndex = this.friends.findIndex(f => f.user_id === messageData.receiver_id)
         if (friendIndex !== -1) {
           this.$set(this.friends[friendIndex], 'last_msg_content', messageData.content)
@@ -251,21 +235,17 @@ export default {
       this.getChatHistory(this.activeFriendId)
     },
     selectFile() {
-      // 实际应用中，这里应该打开文件选择对话框
       console.log('选择文件')
     },
     async openShareDialog() {
-      // 获取用户的文件列表
       try {
         const response = await listFile({ pageNum: 1, pageSize: 50 })
         if (response.code === 200 && response.rows) {
           this.fileList = response.rows
           this.selectedFileId = null
-          // 打开文件选择对话框
           this.fileSelectDialogVisible = true
         } else {
-          console.error('获取文件列表失败: 数据格式不正确')
-          this.$message.error('获取文件列表失败: 数据格式不正确')
+          this.$message.error('获取文件列表失败')
         }
       } catch (error) {
         console.error('获取文件列表失败:', error)
@@ -273,18 +253,20 @@ export default {
       }
     },
     confirmFileSelect() {
-      if (this.selectedFileId) {
-        const file = this.fileList.find(f => f.fileId === this.selectedFileId)
-        if (file) {
-          this.selectedFile = file
-          this.fileSelectDialogVisible = false
-          this.shareDialogVisible = true
-        } else {
-          this.$message.error('文件不存在')
-        }
-      } else {
+      if (!this.selectedFileId) {
         this.$message.error('请选择文件')
+        return
       }
+
+      const file = this.fileList.find(f => f.fileId === this.selectedFileId)
+      if (!file) {
+        this.$message.error('文件不存在')
+        return
+      }
+
+      this.selectedFile = file
+      this.fileSelectDialogVisible = false
+      this.shareDialogVisible = true
     },
     handleShareDialogVisible(visible) {
       this.shareDialogVisible = visible
@@ -295,25 +277,24 @@ export default {
     async encryptSendFile(data) {
       let loading = null
       try {
-        // 显示加载提示
         loading = this.$loading({
           lock: true,
           text: '正在加密发送文件...',
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.7)'
         })
-        
-        // 上传加密文件
+
         const response = await uploadEncryptedFile(data.file, data.receiver_id)
-        
+        const payload = response.data || {}
+
         if (response.code === 200) {
-          // 发送消息通知接收者
           await this.sendMessage({
             receiver_id: data.receiver_id,
-            content: `发送了文件: ${data.file.name}`,
-            msg_type: 2 // 文件消息
+            content: data.file.name,
+            msg_type: 2,
+            file_id: payload.file_id || null
           })
-          
+
           this.$message.success('文件加密发送成功')
         } else {
           this.$message.error('文件发送失败: ' + (response.msg || '未知错误'))
@@ -322,55 +303,41 @@ export default {
         console.error('文件加密发送失败:', error)
         this.$message.error('文件加密发送失败: ' + (error.message || '未知错误'))
       } finally {
-        // 关闭加载提示
         if (loading) {
           loading.close()
         }
       }
     },
     connectWebSocket() {
-      // 建立 WebSocket 连接
       socketClient.connect().then(() => {
-        console.log('WebSocket 连接成功')
-        
-        // 监听接收消息
         socketClient.onReceiveMessage((message) => {
-          // 添加消息到对应好友的消息列表 - 使用 Vue.set 确保响应式
           if (!this.messages[message.sender_id]) {
             this.$set(this.messages, message.sender_id, [])
           }
           this.messages[message.sender_id].push(message)
-          
-          // 更新好友列表中的最后消息和未读计数 - 使用 Vue.set 确保响应式
+
           const friendIndex = this.friends.findIndex(f => f.user_id === message.sender_id)
           if (friendIndex !== -1) {
             this.$set(this.friends[friendIndex], 'last_msg_content', message.content)
             this.$set(this.friends[friendIndex], 'last_msg_time', message.create_time)
 
-            // 如果不是当前聊天的好友，增加未读计数
             if (this.activeFriendId !== message.sender_id) {
               const currentUnread = this.friends[friendIndex].unread_count || 0
               this.$set(this.friends[friendIndex], 'unread_count', currentUnread + 1)
             }
           }
         })
-        
-        // 监听好友上线
+
         socketClient.onFriendOnline((data) => {
-          console.log('好友上线:', data)
           const friendIndex = this.friends.findIndex(f => f.user_id === data.user_id)
           if (friendIndex !== -1) {
-            // 使用 Vue.set 确保响应式更新
             this.$set(this.friends[friendIndex], 'online', true)
           }
         })
 
-        // 监听好友下线
         socketClient.onFriendOffline((data) => {
-          console.log('好友下线:', data)
           const friendIndex = this.friends.findIndex(f => f.user_id === data.user_id)
           if (friendIndex !== -1) {
-            // 使用 Vue.set 确保响应式更新
             this.$set(this.friends[friendIndex], 'online', false)
           }
         })

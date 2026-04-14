@@ -56,7 +56,13 @@ class ChatService:
         return ChatMapper.mark_messages_as_read(user_id, friend_id)
 
     @staticmethod
-    def save_message(sender_id: int, receiver_id: int, content: str, msg_type: int = 1) -> int:
+    def save_message(
+        sender_id: int,
+        receiver_id: int,
+        content: str,
+        msg_type: int = 1,
+        file_id: int = None
+    ) -> int:
         """
         保存聊天消息
 
@@ -69,7 +75,7 @@ class ChatService:
         Returns:
             消息ID
         """
-        return ChatMapper.save_message(sender_id, receiver_id, content, msg_type)
+        return ChatMapper.save_message(sender_id, receiver_id, content, msg_type, file_id=file_id)
 
     @staticmethod
     def get_message_create_time(message_id: int) -> str:

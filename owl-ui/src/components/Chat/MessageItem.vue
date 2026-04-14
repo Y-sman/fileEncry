@@ -2,12 +2,10 @@
   <div
     :class="['message-item', String(message.sender_id) === String(currentUserId) ? 'message-sent' : 'message-received']"
   >
-    <!-- 文本消息 -->
     <div v-if="message.msg_type === 1" class="message-content text-message">
       {{ message.content }}
     </div>
-    
-    <!-- 文件消息 -->
+
     <div v-else-if="message.msg_type === 2" class="message-content file-message">
       <el-card shadow="hover">
         <div class="file-info">
@@ -22,21 +20,21 @@
         </div>
       </el-card>
     </div>
-    
-    <!-- 其他类型消息 -->
+
     <div v-else class="message-content other-message">
       {{ message.content }}
     </div>
-    
+
     <div class="message-time">{{ formatTime(message.create_time) }}</div>
   </div>
 </template>
 
 <script>
+import { downloadFile as downloadEncryptedFile } from '@/api/encry/file'
+import { downloadShare, downloadShareByFile, getSharedByMe, getSharedToMe } from '@/api/encry/share'
+
 export default {
   name: 'MessageItem',
-  components: {
-  },
   props: {
     message: {
       type: Object,
@@ -48,6 +46,9 @@ export default {
     }
   },
   methods: {
+    isSentByCurrentUser() {
+      return String(this.message.sender_id) === String(this.currentUserId)
+    },
     formatTime(time) {
       if (!time) return ''
       const date = new Date(time)
@@ -58,16 +59,64 @@ export default {
     },
     getFileName(filePath) {
       if (!filePath) return '未知文件'
-      const parts = filePath.split('/')
+      if (filePath.startsWith('发送了文件:')) {
+        return filePath.split(':').slice(1).join(':').trim() || '未知文件'
+      }
+      const parts = filePath.replace(/\\/g, '/').split('/')
       return parts[parts.length - 1]
     },
     getFileSize(fileId) {
-      // 实际应用中，这里应该根据 fileId 从服务器获取文件大小
-      return '未知大小'
+      return fileId ? '点击下载' : '历史记录'
     },
-    downloadFile() {
-      // 实际应用中，这里应该调用下载文件的 API
-      console.log('下载文件:', this.message.file_id)
+    async downloadSentFile(fileName) {
+      if (this.message.file_id) {
+        await downloadEncryptedFile(this.message.file_id, fileName)
+        return
+      }
+
+      const response = await getSharedByMe({ page: 1, page_size: 200 })
+      const rows = (response.data && response.data.rows) || []
+      const match = rows.find(item =>
+        String(item.target_user_id) === String(this.message.receiver_id) &&
+        item.file_name === fileName
+      )
+
+      if (!match || !match.file_id) {
+        throw new Error('未找到对应的文件记录，请重新发送一次文件')
+      }
+
+      await downloadEncryptedFile(match.file_id, fileName)
+    },
+    async downloadReceivedFile(fileName) {
+      if (this.message.file_id) {
+        await downloadShareByFile(this.message.file_id, fileName)
+        return
+      }
+
+      const response = await getSharedToMe({ page: 1, page_size: 200 })
+      const rows = (response.data && response.data.rows) || []
+      const match = rows.find(item =>
+        String(item.owner_id) === String(this.message.sender_id) &&
+        item.file_name === fileName
+      )
+
+      if (!match) {
+        throw new Error('未找到对应的分享记录，请让对方重新发送一次文件')
+      }
+
+      await downloadShare(match.share_id, fileName)
+    },
+    async downloadFile() {
+      try {
+        const fileName = this.getFileName(this.message.content)
+        if (this.isSentByCurrentUser()) {
+          await this.downloadSentFile(fileName)
+        } else {
+          await this.downloadReceivedFile(fileName)
+        }
+      } catch (error) {
+        this.$message.error(error.message || '下载失败')
+      }
     }
   }
 }
