@@ -1,0 +1,54 @@
+/**
+* Minimalist Grey Design System
+* Strictly following the provided grey color palette
+**/
+
+/* Grey Color Palette */
+$grey-50: #f2f2f3;
+$grey-100: #e4e5e7;
+$grey-200: #c9cacf;
+$grey-300: #afb0b6;
+$grey-400: #94959e;
+$grey-500: #797b86;
+$grey-600: #61626b;
+$grey-700: #494a50;
+$grey-800: #303136;
+$grey-900: #18191b;
+$grey-950: #111113;
+
+/* theme color - Minimalist Grey */
+$--color-primary: $grey-700;
+$--color-success: $grey-600;
+$--color-warning: $grey-500;
+$--color-danger: $grey-800;
+$--color-info: $grey-400;
+
+$--button-font-weight: 400;
+
+/* Text Colors */
+$--color-text-primary: $grey-900;
+$--color-text-regular: $grey-700;
+$--color-text-secondary: $grey-500;
+$--color-text-placeholder: $grey-400;
+
+/* Border Colors */
+$--border-color-base: $grey-200;
+$--border-color-light: $grey-100;
+$--border-color-lighter: $grey-50;
+$--border-color-extra-light: $grey-50;
+
+/* Background Colors */
+$--background-color-base: $grey-50;
+
+$--table-border:1px solid#dfe6ec;
+
+/* icon font path, required */
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+
+@import "~element-ui/packages/theme-chalk/src/index";
+
+// the :export directive is the magic sauce for webpack
+// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
+:export {
+  theme: $--color-primary;
+}

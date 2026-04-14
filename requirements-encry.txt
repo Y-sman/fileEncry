@@ -1,0 +1,3 @@
+# 文件加解密模块依赖
+# 安装: pip install -r requirements-encry.txt
+cryptography>=41.0.0

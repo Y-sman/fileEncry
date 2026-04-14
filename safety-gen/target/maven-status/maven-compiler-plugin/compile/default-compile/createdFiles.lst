@@ -1,0 +1,13 @@
+com\jklr\generator\domain\GenTableColumn.class
+com\jklr\generator\config\GenConfig.class
+com\jklr\generator\service\IGenTableService.class
+com\jklr\generator\service\GenTableServiceImpl.class
+com\jklr\generator\util\VelocityUtils.class
+com\jklr\generator\controller\GenController.class
+com\jklr\generator\domain\GenTable.class
+com\jklr\generator\service\IGenTableColumnService.class
+com\jklr\generator\mapper\GenTableMapper.class
+com\jklr\generator\service\GenTableColumnServiceImpl.class
+com\jklr\generator\util\VelocityInitializer.class
+com\jklr\generator\util\GenUtils.class
+com\jklr\generator\mapper\GenTableColumnMapper.class

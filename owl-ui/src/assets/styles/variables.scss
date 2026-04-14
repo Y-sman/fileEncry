@@ -1,0 +1,72 @@
+// ============================================
+// Minimalist Grey Design System
+// Strictly following the grey color palette
+// ============================================
+
+// Grey Color Palette
+$grey-50: #f2f2f3;
+$grey-100: #e4e5e7;
+$grey-200: #c9cacf;
+$grey-300: #afb0b6;
+$grey-400: #94959e;
+$grey-500: #797b86;
+$grey-600: #61626b;
+$grey-700: #494a50;
+$grey-800: #303136;
+$grey-900: #18191b;
+$grey-950: #111113;
+
+// Base colors (keeping for compatibility)
+$blue: $grey-700;
+$light-blue: $grey-500;
+$red: $grey-800;
+$pink: $grey-600;
+$green: $grey-600;
+$tiffany: $grey-500;
+$yellow: $grey-400;
+$panGreen: $grey-600;
+
+// Minimalist Menu Theme
+$base-menu-color: $grey-500;
+$base-menu-color-active: $grey-900;
+$base-menu-background: $grey-50;
+$base-logo-title-color: $grey-900;
+
+$base-menu-light-color: $grey-500;
+$base-menu-light-background: $grey-50;
+$base-logo-light-title-color: $grey-900;
+
+$base-sub-menu-background: $grey-100;
+$base-sub-menu-hover: $grey-200;
+
+// 自定义暗色菜单风格
+/**
+$base-menu-color:hsla(0,0%,100%,.65);
+$base-menu-color-active:#fff;
+$base-menu-background:#001529;
+$base-logo-title-color: #ffffff;
+
+$base-menu-light-color:rgba(0,0,0,.70);
+$base-menu-light-background:#ffffff;
+$base-logo-light-title-color: #001529;
+
+$base-sub-menu-background:#000c17;
+$base-sub-menu-hover:#001528;
+*/
+
+$base-sidebar-width: 200px;
+
+// the :export directive is the magic sauce for webpack
+// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
+:export {
+  menuColor: $base-menu-color;
+  menuLightColor: $base-menu-light-color;
+  menuColorActive: $base-menu-color-active;
+  menuBackground: $base-menu-background;
+  menuLightBackground: $base-menu-light-background;
+  subMenuBackground: $base-sub-menu-background;
+  subMenuHover: $base-sub-menu-hover;
+  sideBarWidth: $base-sidebar-width;
+  logoTitleColor: $base-logo-title-color;
+  logoLightTitleColor: $base-logo-light-title-color
+}

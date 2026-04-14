@@ -1,0 +1,1015 @@
+@import './variables.scss';
+@import './mixin.scss';
+@import './transition.scss';
+@import './element-ui.scss';
+@import './sidebar.scss';
+@import './btn.scss';
+
+// ============================================
+// Minimalist Grey Design System
+// ============================================
+
+body {
+  height: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: $grey-50;
+  color: $grey-700;
+}
+
+label {
+  font-weight: 500;
+  color: $grey-700;
+}
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+#app {
+  height: 100%;
+  background-color: $grey-50;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+.no-padding {
+  padding: 0px !important;
+}
+
+.padding-content {
+  padding: 4px 0;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+div:focus {
+  outline: none;
+}
+
+.fr {
+  float: right;
+}
+
+.fl {
+  float: left;
+}
+
+.pr-5 {
+  padding-right: 5px;
+}
+
+.pl-5 {
+  padding-left: 5px;
+}
+
+.block {
+  display: block;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.inlineBlock {
+  display: block;
+}
+
+.clearfix {
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+  }
+}
+
+aside {
+  background: $grey-100;
+  padding: 8px 24px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  display: block;
+  line-height: 32px;
+  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: $grey-700;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  a {
+    color: $grey-700;
+    cursor: pointer;
+
+    &:hover {
+      color: $grey-900;
+    }
+  }
+}
+
+// ============================================
+// Main Container - Minimalist Style
+// ============================================
+.app-container {
+  padding: 24px;
+  background-color: $grey-50;
+  min-height: calc(100vh - 84px);
+}
+
+// ============================================
+// Card Component - Minimalist Style
+// ============================================
+.el-card {
+  border-radius: 12px;
+  border: 1px solid $grey-200;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba($grey-950, 0.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    box-shadow: 0 8px 24px rgba($grey-950, 0.08);
+    transform: translateY(-2px);
+  }
+
+  .el-card__header {
+    padding: 20px 24px;
+    border-bottom: 1px solid $grey-100;
+    font-weight: 600;
+    color: $grey-900;
+    font-size: 16px;
+  }
+
+  .el-card__body {
+    padding: 24px;
+    color: $grey-700;
+  }
+}
+
+// ============================================
+// Table Component - Minimalist Style
+// ============================================
+.el-table {
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba($grey-950, 0.04);
+
+  th {
+    background-color: $grey-50 !important;
+    color: $grey-900;
+    font-weight: 600;
+    padding: 16px;
+    border-bottom: 1px solid $grey-200;
+  }
+
+  td {
+    padding: 16px;
+    color: $grey-700;
+    border-bottom: 1px solid $grey-100;
+  }
+
+  tr:hover > td {
+    background-color: $grey-50;
+  }
+}
+
+// ============================================
+// Button Component - Minimalist Style
+// ============================================
+.el-button {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.el-button--primary {
+    background-color: $grey-800;
+    border-color: $grey-800;
+    color: #ffffff;
+
+    &:hover {
+      background-color: $grey-900;
+      border-color: $grey-900;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba($grey-950, 0.15);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  &.el-button--default {
+    background-color: #ffffff;
+    border-color: $grey-300;
+    color: $grey-700;
+
+    &:hover {
+      border-color: $grey-500;
+      color: $grey-900;
+      background-color: $grey-50;
+    }
+  }
+
+  &.el-button--text {
+    color: $grey-700;
+
+    &:hover {
+      color: $grey-900;
+    }
+  }
+}
+
+// ============================================
+// Input Component - Minimalist Style
+// ============================================
+.el-input__inner {
+  border-radius: 8px;
+  border: 1px solid $grey-300;
+  background-color: #ffffff;
+  color: $grey-900;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &::placeholder {
+    color: $grey-400;
+  }
+
+  &:hover {
+    border-color: $grey-400;
+  }
+
+  &:focus {
+    border-color: $grey-700;
+    box-shadow: 0 0 0 3px rgba($grey-700, 0.08);
+  }
+}
+
+// ============================================
+// Tag Component - Minimalist Style
+// ============================================
+.el-tag {
+  border-radius: 6px;
+  padding: 0 12px;
+  height: 28px;
+  line-height: 26px;
+  font-weight: 500;
+  border: 1px solid $grey-200;
+
+  &.el-tag--info {
+    background-color: $grey-100;
+    border-color: $grey-200;
+    color: $grey-700;
+  }
+}
+
+// ============================================
+// Pagination - Minimalist Style
+// ============================================
+.el-pagination {
+  .el-pagination__sizes .el-input .el-input__inner {
+    border-radius: 6px;
+  }
+
+  .el-pager li {
+    border-radius: 6px;
+    margin: 0 4px;
+    min-width: 32px;
+    height: 32px;
+    line-height: 32px;
+    color: $grey-700;
+
+    &:hover {
+      color: $grey-900;
+    }
+
+    &.active {
+      background-color: $grey-800;
+      color: #ffffff;
+    }
+  }
+
+  .btn-prev,
+  .btn-next {
+    border-radius: 6px;
+    min-width: 32px;
+    height: 32px;
+    line-height: 32px;
+  }
+}
+
+// ============================================
+// Form Component - Minimalist Style
+// ============================================
+.el-form-item__label {
+  color: $grey-700;
+  font-weight: 500;
+}
+
+.el-form-item__error {
+  color: $grey-800;
+}
+
+// ============================================
+// Select Component - Minimalist Style
+// ============================================
+.el-select-dropdown {
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba($grey-950, 0.1);
+  border: 1px solid $grey-200;
+
+  .el-select-dropdown__item {
+    padding: 10px 16px;
+    color: $grey-700;
+
+    &:hover {
+      background-color: $grey-50;
+      color: $grey-900;
+    }
+
+    &.selected {
+      background-color: $grey-100;
+      color: $grey-900;
+      font-weight: 600;
+    }
+  }
+}
+
+// ============================================
+// Date Picker - Minimalist Style
+// ============================================
+.el-date-picker {
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba($grey-950, 0.1);
+
+  .el-picker-panel__content {
+    .el-date-table {
+      th {
+        color: $grey-500;
+      }
+
+      td.current:not(.disabled) span {
+        background-color: $grey-800;
+        color: #ffffff;
+      }
+
+      td.today span {
+        color: $grey-800;
+      }
+    }
+  }
+}
+
+// ============================================
+// Message Box - Minimalist Style
+// ============================================
+.el-message-box {
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba($grey-950, 0.15);
+  border: 1px solid $grey-200;
+
+  .el-message-box__header {
+    padding: 20px 24px;
+    border-bottom: 1px solid $grey-100;
+
+    .el-message-box__title {
+      font-weight: 600;
+      color: $grey-900;
+    }
+  }
+
+  .el-message-box__content {
+    padding: 24px;
+    color: $grey-700;
+  }
+
+  .el-message-box__btns {
+    padding: 16px 24px;
+    border-top: 1px solid $grey-100;
+  }
+}
+
+// ============================================
+// Notification - Minimalist Style
+// ============================================
+.el-notification {
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba($grey-950, 0.1);
+  border: 1px solid $grey-200;
+
+  .el-notification__title {
+    font-weight: 600;
+    color: $grey-900;
+  }
+
+  .el-notification__content {
+    color: $grey-700;
+  }
+}
+
+// ============================================
+// Message - Minimalist Style
+// ============================================
+.el-message {
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba($grey-950, 0.1);
+  border: 1px solid $grey-200;
+  background-color: #ffffff;
+
+  .el-message__content {
+    color: $grey-700;
+  }
+}
+
+// ============================================
+// Tree Component - Minimalist Style
+// ============================================
+.el-tree {
+  background-color: transparent;
+
+  .el-tree-node__content {
+    height: 36px;
+    border-radius: 6px;
+    margin: 2px 0;
+
+    &:hover {
+      background-color: $grey-100;
+    }
+  }
+
+  .el-tree-node:focus > .el-tree-node__content {
+    background-color: $grey-200;
+  }
+}
+
+// ============================================
+// Tabs Component - Minimalist Style
+// ============================================
+.el-tabs {
+  .el-tabs__header {
+    margin-bottom: 24px;
+
+    .el-tabs__nav-wrap::after {
+      background-color: $grey-200;
+      height: 1px;
+    }
+
+    .el-tabs__item {
+      color: $grey-500;
+      font-weight: 500;
+
+      &:hover {
+        color: $grey-700;
+      }
+
+      &.is-active {
+        color: $grey-900;
+        font-weight: 600;
+      }
+    }
+
+    .el-tabs__active-bar {
+      background-color: $grey-800;
+      height: 2px;
+    }
+  }
+}
+
+// ============================================
+// Breadcrumb - Minimalist Style
+// ============================================
+.el-breadcrumb {
+  .el-breadcrumb__item {
+    .el-breadcrumb__inner {
+      color: $grey-500;
+      font-weight: 400;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: $grey-700;
+      }
+    }
+
+    &:last-child .el-breadcrumb__inner {
+      color: $grey-900;
+      font-weight: 600;
+    }
+  }
+
+  .el-breadcrumb__separator {
+    color: $grey-300;
+  }
+}
+
+// ============================================
+// Dropdown - Minimalist Style
+// ============================================
+.el-dropdown-menu {
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba($grey-950, 0.1);
+  border: 1px solid $grey-200;
+  padding: 8px;
+
+  .el-dropdown-menu__item {
+    border-radius: 6px;
+    padding: 10px 16px;
+    color: $grey-700;
+    margin: 2px 0;
+
+    &:hover {
+      background-color: $grey-100;
+      color: $grey-900;
+    }
+  }
+}
+
+// ============================================
+// Checkbox & Radio - Minimalist Style
+// ============================================
+.el-checkbox__inner {
+  border-radius: 4px;
+  border-color: $grey-300;
+
+  &:hover {
+    border-color: $grey-500;
+  }
+}
+
+.el-checkbox__input.is-checked .el-checkbox__inner {
+  background-color: $grey-800;
+  border-color: $grey-800;
+}
+
+.el-radio__inner {
+  border-color: $grey-300;
+
+  &:hover {
+    border-color: $grey-500;
+  }
+}
+
+.el-radio__input.is-checked .el-radio__inner {
+  background-color: $grey-800;
+  border-color: $grey-800;
+}
+
+// ============================================
+// Switch - Minimalist Style
+// ============================================
+.el-switch__core {
+  border-radius: 20px;
+  border-color: $grey-300;
+
+  &.el-switch__core--checked {
+    border-color: $grey-700;
+    background-color: $grey-700;
+  }
+}
+
+// ============================================
+// Slider - Minimalist Style
+// ============================================
+.el-slider__runway {
+  background-color: $grey-200;
+  border-radius: 2px;
+}
+
+.el-slider__bar {
+  background-color: $grey-700;
+  border-radius: 2px;
+}
+
+.el-slider__button {
+  border-color: $grey-700;
+  box-shadow: 0 2px 8px rgba($grey-950, 0.15);
+}
+
+// ============================================
+// Progress - Minimalist Style
+// ============================================
+.el-progress-bar__outer {
+  background-color: $grey-200;
+  border-radius: 4px;
+}
+
+.el-progress-bar__inner {
+  background-color: $grey-700;
+  border-radius: 4px;
+}
+
+// ============================================
+// Badge - Minimalist Style
+// ============================================
+.el-badge__content {
+  border-radius: 10px;
+  background-color: $grey-800;
+  border-color: $grey-800;
+}
+
+// ============================================
+// Loading - Minimalist Style
+// ============================================
+.el-loading-spinner .path {
+  stroke: $grey-700;
+}
+
+// ============================================
+// Popover - Minimalist Style
+// ============================================
+.el-popover {
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba($grey-950, 0.1);
+  border: 1px solid $grey-200;
+}
+
+// ============================================
+// Tooltip - Minimalist Style
+// ============================================
+.el-tooltip__popper {
+  border-radius: 6px;
+  background-color: $grey-800;
+
+  &[x-placement^="top"] .popper__arrow::after {
+    border-top-color: $grey-800;
+  }
+
+  &[x-placement^="bottom"] .popper__arrow::after {
+    border-bottom-color: $grey-800;
+  }
+}
+
+// ============================================
+// Drawer - Minimalist Style
+// ============================================
+.el-drawer {
+  .el-drawer__header {
+    padding: 20px 24px;
+    border-bottom: 1px solid $grey-100;
+    margin-bottom: 0;
+
+    span {
+      font-weight: 600;
+      font-size: 16px;
+      color: $grey-900;
+    }
+  }
+
+  .el-drawer__body {
+    padding: 24px;
+    background-color: $grey-50;
+  }
+}
+
+// ============================================
+// Alert - Minimalist Style
+// ============================================
+.el-alert {
+  border-radius: 8px;
+  padding: 14px 16px;
+
+  .el-alert__title {
+    font-weight: 600;
+  }
+}
+
+// ============================================
+// Timeline - Minimalist Style
+// ============================================
+.el-timeline {
+  .el-timeline-item__node {
+    background-color: $grey-400;
+  }
+
+  .el-timeline-item__content {
+    color: $grey-700;
+  }
+
+  .el-timeline-item__timestamp {
+    color: $grey-500;
+  }
+}
+
+// ============================================
+// Steps - Minimalist Style
+// ============================================
+.el-steps {
+  .el-step__head.is-process {
+    color: $grey-900;
+    border-color: $grey-900;
+  }
+
+  .el-step__title.is-process {
+    color: $grey-900;
+    font-weight: 600;
+  }
+
+  .el-step__description.is-process {
+    color: $grey-600;
+  }
+}
+
+// ============================================
+// Upload - Minimalist Style
+// ============================================
+.el-upload--picture-card {
+  border-radius: 8px;
+  border: 2px dashed $grey-300;
+  background-color: $grey-50;
+  color: $grey-500;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: $grey-500;
+    color: $grey-700;
+    background-color: $grey-100;
+  }
+}
+
+// ============================================
+// Collapse - Minimalist Style
+// ============================================
+.el-collapse {
+  border-color: $grey-200;
+
+  .el-collapse-item__header {
+    color: $grey-900;
+    font-weight: 600;
+    background-color: transparent;
+    border-color: $grey-200;
+  }
+
+  .el-collapse-item__content {
+    color: $grey-700;
+    background-color: $grey-50;
+  }
+}
+
+// ============================================
+// Descriptions - Minimalist Style
+// ============================================
+.el-descriptions {
+  .el-descriptions__title {
+    color: $grey-900;
+    font-weight: 600;
+  }
+
+  .el-descriptions-item__label {
+    color: $grey-600;
+  }
+
+  .el-descriptions-item__content {
+    color: $grey-900;
+  }
+}
+
+// ============================================
+// Empty - Minimalist Style
+// ============================================
+.el-empty {
+  .el-empty__description {
+    color: $grey-500;
+  }
+}
+
+// ============================================
+// Result - Minimalist Style
+// ============================================
+.el-result {
+  .el-result__title {
+    color: $grey-900;
+    font-weight: 600;
+  }
+
+  .el-result__subtitle {
+    color: $grey-600;
+  }
+}
+
+// ============================================
+// Skeleton - Minimalist Style
+// ============================================
+.el-skeleton {
+  .el-skeleton__item {
+    background: linear-gradient(90deg, $grey-100 25%, $grey-200 37%, $grey-100 63%);
+  }
+}
+
+// ============================================
+// Backtop - Minimalist Style
+// ============================================
+.el-backtop {
+  background-color: #ffffff;
+  border: 1px solid $grey-200;
+  box-shadow: 0 4px 12px rgba($grey-950, 0.1);
+  color: $grey-700;
+
+  &:hover {
+    background-color: $grey-50;
+    color: $grey-900;
+  }
+}
+
+// ============================================
+// Divider - Minimalist Style
+// ============================================
+.el-divider {
+  background-color: $grey-200;
+
+  .el-divider__text {
+    color: $grey-500;
+    background-color: $grey-50;
+  }
+}
+
+// ============================================
+// Image - Minimalist Style
+// ============================================
+.el-image {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+// ============================================
+// Avatar - Minimalist Style
+// ============================================
+.el-avatar {
+  background-color: $grey-200;
+  color: $grey-700;
+}
+
+// ============================================
+// Calendar - Minimalist Style
+// ============================================
+.el-calendar {
+  background-color: #ffffff;
+  border-radius: 12px;
+  border: 1px solid $grey-200;
+
+  .el-calendar__header {
+    border-bottom: 1px solid $grey-100;
+  }
+
+  .el-calendar-table {
+    th {
+      color: $grey-500;
+    }
+
+    td.is-selected {
+      background-color: $grey-100;
+    }
+
+    .el-calendar-day:hover {
+      background-color: $grey-50;
+    }
+  }
+}
+
+// ============================================
+// Carousel - Minimalist Style
+// ============================================
+.el-carousel {
+  .el-carousel__indicators {
+    .el-carousel__indicator {
+      button {
+        background-color: $grey-300;
+        border-radius: 2px;
+      }
+
+      &.is-active button {
+        background-color: $grey-700;
+      }
+    }
+  }
+}
+
+// ============================================
+// Rate - Minimalist Style
+// ============================================
+.el-rate {
+  .el-rate__icon {
+    color: $grey-300;
+
+    &.hover,
+    &.active {
+      color: $grey-700;
+    }
+  }
+}
+
+// ============================================
+// Color Picker - Minimalist Style
+// ============================================
+.el-color-picker__trigger {
+  border-color: $grey-300;
+  border-radius: 6px;
+}
+
+// ============================================
+// Transfer - Minimalist Style
+// ============================================
+.el-transfer {
+  .el-transfer-panel {
+    border-color: $grey-200;
+    border-radius: 8px;
+
+    .el-transfer-panel__header {
+      background-color: $grey-50;
+      border-color: $grey-200;
+      color: $grey-900;
+    }
+  }
+}
+
+// ============================================
+// Infinite Scroll Loading
+// ============================================
+.el-infinite-scroll__loading {
+  color: $grey-500;
+}
+
+// ============================================
+// Original Styles (keeping for compatibility)
+// ============================================
+.components-container {
+  margin: 30px 50px;
+  position: relative;
+}
+
+.pagination-container {
+  margin-top: 30px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.sub-navbar {
+  height: 50px;
+  line-height: 50px;
+  position: relative;
+  width: 100%;
+  text-align: right;
+  padding-right: 20px;
+  transition: 600ms ease position;
+  background: $grey-800;
+
+  .subtitle {
+    font-size: 20px;
+    color: #ffffff;
+  }
+
+  &.draft {
+    background: $grey-500;
+  }
+
+  &.deleted {
+    background: $grey-500;
+  }
+}
+
+.link-type,
+.link-type:focus {
+  color: $grey-700;
+  cursor: pointer;
+
+  &:hover {
+    color: $grey-900;
+  }
+}
+
+.filter-container {
+  padding-bottom: 10px;
+
+  .filter-item {
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 10px;
+  }
+}
+
+//refine vue-multiselect plugin
+.multiselect {
+  line-height: 16px;
+}
+
+.multiselect--active {
+  z-index: 1000 !important;
+}

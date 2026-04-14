@@ -1,0 +1,19 @@
+owl:
+  name: 'safety-flask'
+  version: '1.0.0'
+  author: 'shaw'
+  host: 'localhost'
+  port: 9000
+  api:
+    version: '/api'
+  env: 'dev'
+  profile: D:/owl/uploadPath
+
+token:
+    header: 'Authorization'
+    secret: 'abcdefghijklmnopqrstuvwxyz'
+    expireTime: 30
+
+yolo:
+    model_path: 'models/yolov5m.pt'  # YOLOv5 模型路径（相对于项目根目录）
+    device: 'auto'  # 设备类型：'auto' 自动选择, 'cpu', 'cuda', 'cuda:0' 等

@@ -1,0 +1,447 @@
+// cover some element-ui styles
+
+.el-breadcrumb__inner,
+.el-breadcrumb__inner a {
+  font-weight: 400 !important;
+}
+
+.el-upload {
+  input[type="file"] {
+    display: none !important;
+  }
+}
+
+.el-upload__input {
+  display: none;
+}
+
+.cell {
+  .el-tag {
+    margin-right: 0px;
+  }
+}
+
+.small-padding {
+  .cell {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
+
+.fixed-width {
+  .el-button--mini {
+    padding: 7px 10px;
+    width: 60px;
+  }
+}
+
+.status-col {
+  .cell {
+    padding: 0 10px;
+    text-align: center;
+
+    .el-tag {
+      margin-right: 0px;
+    }
+  }
+}
+
+// to fixed https://github.com/ElemeFE/element/issues/2461
+.el-dialog {
+  transform: none;
+  left: 0;
+  position: relative;
+  margin: 0 auto;
+}
+
+// refine element ui upload
+.upload-container {
+  .el-upload {
+    width: 100%;
+
+    .el-upload-dragger {
+      width: 100%;
+      height: 200px;
+    }
+  }
+}
+
+// dropdown
+.el-dropdown-menu {
+  a {
+    display: block
+  }
+}
+
+// fix date-picker ui bug in filter-item
+.el-range-editor.el-input__inner {
+  display: inline-flex !important;
+}
+
+// to fix el-date-picker css style
+.el-range-separator {
+  box-sizing: content-box;
+}
+
+.el-menu--collapse
+  > div
+  > .el-submenu
+  > .el-submenu__title
+  .el-submenu__icon-arrow {
+  display: none;
+}
+
+// ==================== 全局圆角样式 ====================
+
+// 对话框圆角
+.el-dialog {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+
+  .el-dialog__header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #f3f4f6;
+
+    .el-dialog__title {
+      font-weight: 600;
+      font-size: 16px;
+      color: #1f2937;
+    }
+  }
+
+  .el-dialog__body {
+    padding: 24px;
+  }
+
+  .el-dialog__footer {
+    padding: 16px 24px;
+    border-top: 1px solid #f3f4f6;
+  }
+}
+
+// 卡片圆角
+.el-card {
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .el-card__header {
+    padding: 18px 20px;
+    border-bottom: 1px solid #f3f4f6;
+    font-weight: 600;
+    color: #1f2937;
+  }
+
+  .el-card__body {
+    padding: 20px;
+  }
+}
+
+// 输入框圆角
+.el-input__inner {
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: #d1d5db;
+  }
+
+  &:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+}
+
+// 下拉选择器圆角
+.el-select .el-input__inner {
+  border-radius: 10px;
+}
+
+// 日期选择器圆角
+.el-date-editor.el-input__inner {
+  border-radius: 10px;
+}
+
+// 按钮圆角
+.el-button {
+  border-radius: 8px;
+  transition: all 0.3s ease;
+
+  &.el-button--default {
+    border: 1px solid #e5e7eb;
+
+    &:hover {
+      border-color: #2563eb;
+      color: #2563eb;
+    }
+  }
+}
+
+// 表格圆角
+.el-table {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+
+  th {
+    background-color: #f9fafb !important;
+    color: #374151;
+    font-weight: 600;
+    padding: 14px 16px;
+  }
+
+  td {
+    padding: 14px 16px;
+  }
+}
+
+// 分页圆角
+.el-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  // 修复 total 文本对齐
+  .el-pagination__total {
+    height: 32px;
+    line-height: 32px;
+    margin-right: 16px;
+    font-size: 14px;
+    color: #61626b;
+    font-weight: 400;
+  }
+
+  // 修复 sizes 下拉框对齐
+  .el-pagination__sizes {
+    margin-right: 16px;
+
+    .el-input .el-input__inner {
+      border-radius: 8px;
+      height: 32px;
+      line-height: 32px;
+    }
+  }
+
+  // 修复 jumper 对齐
+  .el-pagination__jump {
+    height: 32px;
+    line-height: 32px;
+    margin-left: 16px;
+    font-size: 14px;
+    color: #61626b;
+
+    .el-input__inner {
+      border-radius: 8px;
+      height: 32px;
+      line-height: 32px;
+    }
+  }
+
+  // 修复所有子元素垂直对齐
+  .el-pagination__rightwrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  .el-pager li {
+    border-radius: 8px;
+    margin: 0 4px;
+    min-width: 32px;
+    height: 32px;
+    line-height: 32px;
+  }
+
+  .btn-prev,
+  .btn-next {
+    border-radius: 8px;
+    min-width: 32px;
+    height: 32px;
+    line-height: 32px;
+  }
+
+  button {
+    height: 32px;
+    line-height: 32px;
+  }
+}
+
+// 下拉菜单圆角
+.el-dropdown-menu {
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  padding: 8px;
+
+  .el-dropdown-menu__item {
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin: 2px 0;
+
+    &:hover {
+      background-color: #eff6ff;
+      color: #2563eb;
+    }
+  }
+}
+
+// 消息提示圆角
+.el-message {
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  padding: 14px 20px;
+}
+
+// 通知圆角
+.el-notification {
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+// 标签圆角
+.el-tag {
+  border-radius: 6px;
+  padding: 0 10px;
+  height: 28px;
+  line-height: 26px;
+}
+
+// 徽章圆角
+.el-badge__content {
+  border-radius: 10px;
+}
+
+// 开关圆角
+.el-switch__core {
+  border-radius: 20px;
+}
+
+// 滑块圆角
+.el-slider__runway {
+  border-radius: 4px;
+}
+
+.el-slider__bar {
+  border-radius: 4px;
+}
+
+.el-slider__button {
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+// 复选框圆角
+.el-checkbox__inner {
+  border-radius: 6px;
+}
+
+// 单选框圆角
+.el-radio__inner {
+  border-radius: 50%;
+}
+
+// 文本域圆角
+.el-textarea__inner {
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  padding: 12px 16px;
+
+  &:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+}
+
+// 上传组件圆角
+.el-upload--picture-card {
+  border-radius: 12px;
+  border: 2px dashed #e5e7eb;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: #2563eb;
+    color: #2563eb;
+  }
+}
+
+// 树形控件圆角
+.el-tree {
+  border-radius: 12px;
+  padding: 12px;
+}
+
+// 时间线圆角
+.el-timeline-item__node {
+  border-radius: 50%;
+}
+
+// 步骤条圆角
+.el-step__icon {
+  border-radius: 50%;
+}
+
+// 弹出框圆角
+.el-popover {
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+// 提示框圆角
+.el-tooltip__popper {
+  border-radius: 8px;
+}
+
+// 抽屉圆角（顶部和底部）
+.el-drawer {
+  .el-drawer__header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #f3f4f6;
+    margin-bottom: 0;
+
+    span {
+      font-weight: 600;
+      font-size: 16px;
+      color: #1f2937;
+    }
+  }
+
+  .el-drawer__body {
+    padding: 24px;
+  }
+}
+
+// 表单标签样式
+.el-form-item__label {
+  color: #4b5563;
+  font-weight: 500;
+}
+
+// 警告提示圆角
+.el-alert {
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+// 面包屑样式优化
+.el-breadcrumb {
+  .el-breadcrumb__item {
+    .el-breadcrumb__inner {
+      color: #6b7280;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: #8b8d93;
+      }
+    }
+
+    &:last-child .el-breadcrumb__inner {
+      color: #1f2937;
+      font-weight: 600;
+    }
+  }
+}
