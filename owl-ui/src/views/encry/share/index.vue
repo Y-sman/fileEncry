@@ -209,9 +209,9 @@ export default {
       this.loadSharedByMe()
     },
     
-    async downloadSharedFile(row) {
-      const shareId = row && row.share_id ? row.share_id : row
-      const fileName = row && row.file_name ? row.file_name : ''
+    async downloadSharedFile(rowOrShareId) {
+      const shareId = rowOrShareId && rowOrShareId.share_id ? rowOrShareId.share_id : rowOrShareId
+      const fileName = rowOrShareId && rowOrShareId.file_name ? rowOrShareId.file_name : ''
       this.downloadingShareId = shareId
       try {
         await downloadShare(shareId, fileName)
