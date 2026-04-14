@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 
 from owl_common.descriptor.serializer import JsonSerializer
 from owl_common.base.model import AjaxResponse
+from owl_common.exception import ServiceException
 from owl_encry.service.enc_file import EncFileService
 from service.file_share_service import FileShareService
 

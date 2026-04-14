@@ -1,4 +1,7 @@
 import request from '@/utils/request'
+import { saveAs } from 'file-saver'
+import { blobValidate } from '@/utils/ruoyi'
+import errorCode from '@/utils/errorCode'
 
 // 分享文件
 export function shareFile(fileId, targetUserId) {
@@ -39,31 +42,27 @@ export function revokeShare(shareId) {
 }
 
 // 下载分享的文件
-export function downloadShare(shareId) {
+export function downloadShare(shareId, filename) {
   return request({
     url: `/encry/file/share/download/${shareId}`,
     method: 'get',
     responseType: 'blob'
-  }).then(response => {
-    const blob = new Blob([response.data])
-    const url = window.URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    
-    // 从响应头中获取文件名
-    const contentDisposition = response.headers['content-disposition']
-    let fileName = 'download'
-    if (contentDisposition) {
-      const match = contentDisposition.match(/filename="(.*)"/)
-      if (match && match[1]) {
-        fileName = match[1]
-      }
+  }).then(async res => {
+    const blob = res instanceof Blob ? res : res.data
+    const isBlob = await blobValidate(blob)
+    if (isBlob) {
+      saveAs(blob, filename || 'shared-file')
+      return
     }
-    
-    a.download = fileName
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    window.URL.revokeObjectURL(url)
+    const text = await blob.text()
+    let msg = errorCode['default']
+    try {
+      const rsp = JSON.parse(text)
+      const code = rsp.code
+      msg = rsp.msg || (code ? errorCode[code] : undefined) || msg
+    } catch (e) {
+      if (text) msg = text
+    }
+    return Promise.reject(new Error(msg))
   })
 }
